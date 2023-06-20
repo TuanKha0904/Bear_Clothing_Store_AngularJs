@@ -2,6 +2,7 @@ const DOMAIN = 'https://tuankha.alwaysdata.net/index.php/';
 
 var app = angular.module('MyApp', ['ngRoute']);
 
+//config
 app.config(function($routeProvider){
     $routeProvider
         .when('/', {
@@ -41,6 +42,7 @@ app.config(function($routeProvider){
        });
 });
 
+// controller
 app.controller('HomeController',function($scope, $http){
     $http.get(DOMAIN + 'Home/Get_Category').then(function(response){
         $scope.categories = response.data;
@@ -135,19 +137,9 @@ app.controller('RegisterController', function($scope, $http){
 
 app.controller('ShopCartController', function($scope, $http){
     
-})
+});
 
-
-
-
-
-
-
-
-
-
-
-
+// directive
 app.directive('setbg', function (){
     /*------------------
         Background Set
@@ -157,10 +149,26 @@ app.directive('setbg', function (){
             element.css('background-image', 'url(' + attrs.setbg + ')');
         }
     };
-    // $('.set-bg').each(function () {
-    //     var bg = $(this).data('setbg');
-    //     $(this).css('background-image', 'url(' + bg + ')');
-    // });
+});
+
+app.directive('banner', () =>{
+    /*--------------------------
+        Banner Slider
+    ----------------------------*/
+    return{
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).owlCarousel({
+                loop: true,
+                margin: 0,
+                items: 1,
+                dots: true,
+                smartSpeed: 1200,
+                autoHeight: false,
+                autoplay: true
+            });
+        }
+    };
 });
 
 app.directive('shop', ()=>{

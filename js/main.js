@@ -75,19 +75,6 @@ Created: Colorib
     });
 
     /*--------------------------
-        Banner Slider
-    ----------------------------*/
-    $(".banner__slider").owlCarousel({
-        loop: true,
-        margin: 0,
-        items: 1,
-        dots: true,
-        smartSpeed: 1200,
-        autoHeight: false,
-        autoplay: true
-    });
-
-    /*--------------------------
         Product Details Slider
     ----------------------------*/
     $(".product__details__pic__slider").owlCarousel({
