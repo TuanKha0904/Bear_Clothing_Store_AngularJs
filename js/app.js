@@ -3,7 +3,7 @@ var app = angular.module('MyApp', ['ngRoute']);
 app.config(function($routeProvider){
     $routeProvider
         .when('/', {
-            templateUrl: '../Views/abc.html',
+            templateUrl: './Views/abc.html',
             controller: 'HomeController'
         })
         .when('/shop/:id', {
@@ -53,7 +53,7 @@ app.directive('setbg', () => {
 app.directive('shop', ()=>{
     return {
         restrict: 'E',
-        templateUrl: '../Views/shop.html',
+        templateUrl: './Views/shop.html',
         bind: {
             obj: '='
         },
