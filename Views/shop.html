@@ -1,0 +1,59 @@
+<!-- Shop Section Begin -->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="shop__sidebar">
+                    <div class="sidebar__categories">
+                        <div class="section-title">
+                            <h4>Categories</h4>
+                        </div>
+                        <div class="categories__accordion">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card" ng-click = 'All()' >
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse"
+                                            data-target="#collapseOne">All</a>
+                                    </div>
+                                </div>
+                                <div class="card" ng-repeat='category in categories'>
+                                    <div class="card-heading" ng-click = 'CategoryProduct(category.ID_Category)' >
+                                        <a data-toggle="collapse"
+                                            data-target="#collapseOne" >{{category.NameCategory}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6" ng-repeat='product in getCurrentPageProducts()'>
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="<?php echo base_url('{{product.Image_url}}') ?>">
+                                <ul class="product__hover">
+                                    <li><a href="<?php echo base_url('{{product.Image_url}}') ?>"
+                                            class="image-popup"><span class="arrow_expand"></span></a></li>
+                                    <li><a ng-click = 'gotoProductDetail(product.ID_Product)'><span class="icon_menu"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">{{product.NameProduct}}</a></h6>
+                                <div class="product__price">$ {{product.Price}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <div class="pagination__option" ng-if = 'showPagination()'>
+                       <a ng-class = "{'page-active' : currentPage === page}" ng-repeat = 'page in getPageNumbers()' ng-click = 'gotoPage(page)'> {{page}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shop Section End -->
