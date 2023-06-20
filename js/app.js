@@ -3,7 +3,7 @@ const DOMAIN = 'https://tuankha.alwaysdata.net/index.php/';
 var app = angular.module('MyApp', ['ngRoute']);
 
 //config
-app.config(function($routeProvider){
+app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: './Views/home.html',
@@ -21,7 +21,7 @@ app.config(function($routeProvider){
             template: '<login></login>',
             controller: 'LoginController'
         })
-        .when('/product_detail', {
+        .when('/product_detail/:id', {
             template: '<productdetail></productdetail>',
             controller: 'ProductDetailController'
         })
@@ -37,19 +37,19 @@ app.config(function($routeProvider){
             template: '<shopcart></shopcart>',
             controller: 'ShopCartController'
         })
-       .otherwise({
-        redirectTo: '/'
-       });
+        .otherwise({
+            redirectTo: '/'
+        });
 });
 
 // controller
-app.controller('HomeController',function($scope, $http){
-    $http.get(DOMAIN + 'Home/Get_Category').then(function(response){
+app.controller('HomeController', function ($scope, $http) {
+    $http.get(DOMAIN + 'Home/Get_Category').then(function (response) {
         $scope.categories = response.data;
     })
 });
 
-app.controller('ShopController', function($scope, $http){
+app.controller('ShopController', function ($scope, $http) {
     $scope.currentPage = 1;
     $scope.itemsPerPage = 6;
     $scope.categories = [];
@@ -109,55 +109,54 @@ app.controller('ShopController', function($scope, $http){
     $scope.showPagination = function () {
         return $scope.getTotalPages() > 1;
     };
-
-    $scope.gotoProductDetail = function(ID_Product){
-        $location.path('/product_detail/' + ID_Product);
-    };
 });
 
-app.controller('CheckoutController', function($scope, $http){
-    
+app.controller('CheckoutController', function ($scope, $http) {
+
 });
 
-app.controller('LoginController', function($scope, $http){
-    
+app.controller('LoginController', function ($scope, $http) {
+
 });
 
-app.controller('ProductDetailController', function($scope, $http){
-    
+app.controller('ProductDetailController', function ($scope, $http, $routeParams) {
+    var productID = $routeParams.id;
+    $http.get(DOMAIN + 'ProductDetail/index/' + productID).then(function (response) {
+        $scope.product = response.data;
+    });
 });
 
-app.controller('ProfileController', function($scope, $http){
-    
+app.controller('ProfileController', function ($scope, $http) {
+
 });
 
-app.controller('RegisterController', function($scope, $http){
-    
+app.controller('RegisterController', function ($scope, $http) {
+
 });
 
-app.controller('ShopCartController', function($scope, $http){
-    
+app.controller('ShopCartController', function ($scope, $http) {
+
 });
 
 // directive
-app.directive('setbg', function (){
+app.directive('setbg', function () {
     /*------------------
         Background Set
     --------------------*/
     return {
-        link: function(scope, element, attrs){
+        link: function (scope, element, attrs) {
             element.css('background-image', 'url(' + attrs.setbg + ')');
         }
     };
 });
 
-app.directive('banner', () =>{
+app.directive('banner', () => {
     /*--------------------------
         Banner Slider
     ----------------------------*/
-    return{
+    return {
         restrict: 'A',
-        link: function(scope, element, attrs){
+        link: function (scope, element, attrs) {
             $(element).owlCarousel({
                 loop: true,
                 margin: 0,
@@ -171,64 +170,90 @@ app.directive('banner', () =>{
     };
 });
 
-app.directive('shop', ()=>{
+app.directive('popub', function() {
+    /*------------------
+        Magnific
+    --------------------*/
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          element.on('click', function() {
+            var imageUrl = attrs.href;
+            $.magnificPopup.open({
+              type: 'image',
+              items: {
+                src: imageUrl
+              },
+              mainClass: 'mfp-with-zoom',
+              zoom: {
+                enabled: true,
+                duration: 300,
+                easing: 'ease-in-out'
+              }
+            });
+          });
+        }
+      };
+});
+
+app.directive('shop', () => {
     return {
         restrict: 'E',
         templateUrl: './Views/shop.html',
-        };
+    };
 });
 
-app.directive('headingPage', () =>{
-    return{
+app.directive('headingPage', () => {
+    return {
         restrict: 'E',
         templateUrl: './Views/header.html',
     }
 });
 
-app.directive('footerPage', () =>{
-    return{
+app.directive('footerPage', () => {
+    return {
         restrict: 'E',
         templateUrl: './Views/footer.html',
     }
 });
 
-app.directive('checkout', () =>{
-    return{
+app.directive('checkout', () => {
+    return {
         restrict: 'E',
         templateUrl: './Views/checkout.html',
     }
 });
 
-app.directive('login', () =>{
-    return{
+app.directive('login', () => {
+    return {
         restrict: 'E',
         templateUrl: './Views/login.html',
     }
 });
 
-app.directive('productdetail', () =>{
-    return{
+app.directive('productdetail', () => {
+    return {
         restrict: 'E',
         templateUrl: './Views/product_detail.html',
     }
 });
 
-app.directive('profile', () =>{
-    return{
+app.directive('profile', () => {
+    return {
         restrict: 'E',
         templateUrl: './Views/profile.html',
     }
 });
 
-app.directive('register', () =>{
-    return{
+app.directive('register', () => {
+    return {
         restrict: 'E',
         templateUrl: './Views/register.html',
     }
 });
 
-app.directive('shopcart', () =>{
-    return{
+app.directive('shopcart', () => {
+    return {
         restrict: 'E',
         templateUrl: './Views/shop_cart.html',
     }
@@ -240,4 +265,4 @@ app.directive('shopcart', () =>{
 
 
 
-    
+

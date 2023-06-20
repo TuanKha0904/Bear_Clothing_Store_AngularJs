@@ -34,11 +34,12 @@
                     <div class="col-lg-4 col-md-6" ng-repeat='product in getCurrentPageProducts()'>
                         <div class="product__item">
                             <div class="product__item__pic set-bg"
-                                data-setbg="./Styles/img/Women_fasion/IMG_1667895570353_1667895708783.jpg">
+                                data-setbg="./{{product.Image_url}}">
                                 <ul class="product__hover">
-                                    <li><a href="<?php echo base_url('{{product.Image_url}}') ?>"
-                                            class="image-popup"><span class="arrow_expand"></span></a></li>
-                                    <li><a href="#!product_detail"><span class="icon_menu"></span></a></li>
+                                    <li><a href = "{{product.Image_url}}" class = "image-popup" popub >
+                                         <span class="arrow_expand"></span>
+                                    </a></li>
+                                    <li><a href="#!product_detail/{{product.ID_Product}}"><span class="icon_menu"></span></a></li>
                                     <li><a href="#"><span class="icon_bag_alt"></span></a></li>
                                 </ul>
                             </div>

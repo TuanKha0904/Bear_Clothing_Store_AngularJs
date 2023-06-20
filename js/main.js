@@ -108,22 +108,7 @@ Created: Colorib
     /*------------------
 		Magnific
     --------------------*/
-    $('.image-popup').magnificPopup({
-        type: 'image',
-        image: {
-            verticalFit: true
-        },
-        fixedContentPos: true,
-        fixedBgPos: true,
-        mainClass: 'mfp-no-margins mfp-with-zoom', //Thêm class này để ẩn viền đen
-        callbacks: {
-            beforeOpen: function() {
-                // Loại bỏ viền đen khi ảnh được hiển thị
-                this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-no-margins');
-                this.st.mainClass = this.st.el.attr('data-effect');
-            }
-        }
-    });
+ 
 
     $(document).on('click', function(e) {
         var popup = $('.mfp-container');

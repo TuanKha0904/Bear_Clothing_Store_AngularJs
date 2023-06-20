@@ -8,16 +8,16 @@
                         <div class="product__details__slider__content">
                             <div class="product__details__pic__slider owl-carousel">
                                 <img data-hash="product-1" class="product__big__img"
-                                    src="<?php echo base_url('{{productDetail.Image_url}}') ?> alt="">
+                                    src="{{product.Image_url}} alt="">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="product__details__text">
-                        <h3>{{productDetail.NameProduct}}</h3>
-                        <div class="product__details__price">{{productDetail.Price}}</div>
-                        <p>{{productDetail.ProductDetail}}</p>
+                        <h3>{{product.NameProduct}}</h3>
+                        <div class="product__details__price">{{product.Price}}</div>
+                        <p>{{product.ProductDetail}}</p>
                         <div class="product__details__button">
                             <div class="quantity">
                                 <span>Quantity:</span>
