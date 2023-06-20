@@ -1,65 +1,235 @@
+const DOMAIN = 'https://tuankha.alwaysdata.net/index.php/';
+
 var app = angular.module('MyApp', ['ngRoute']);
 
 app.config(function($routeProvider){
     $routeProvider
         .when('/', {
-            templateUrl: './Views/abc.html',
+            templateUrl: './Views/home.html',
             controller: 'HomeController'
         })
-        .when('/shop/:id', {
+        .when('/shop', {
             template: '<shop></shop>',
-        })
-        .when('/product_detail', {
-            templateUrl: '../Views/product_detail.html',
-            controller: 'ProductDetailController'
-        })
-        .when('/shop_cart', {
-            templateUrl: '../Views/shop_cart.html',
-            controller: 'ShopCartController'
+            controller: 'ShopController'
         })
         .when('/checkout', {
-            templateUrl: '../Views/checkout.html',
+            template: '<checkout></checkout>',
             controller: 'CheckoutController'
         })
-        .when('/register', {
-            templateUrl: '../Views/register.html',
-            controller: 'RegisterController'
-        })
         .when('/login', {
-            templateUrl: '../Views/login.html',
+            template: '<login></login>',
             controller: 'LoginController'
         })
-        .otherwise({
-            redirectTo: '/'
-        });
+        .when('/product_detail', {
+            template: '<productdetail></productdetail>',
+            controller: 'ProductDetailController'
+        })
+        .when('/profile ', {
+            template: '<profile></profile>',
+            controller: 'ProfileController'
+        })
+        .when('/register', {
+            template: '<register></register>',
+            controller: 'RegisterController'
+        })
+        .when('/shop_cart', {
+            template: '<shopcart></shopcart>',
+            controller: 'ShopCartController'
+        })
+       .otherwise({
+        redirectTo: '/'
+       });
 });
 
 app.controller('HomeController',function($scope, $http){
-    $http.get("https://tuankha.alwaysdata.net/index.php/shop/Get_Category").then(function(response){
+    $http.get(DOMAIN + 'Home/Get_Category').then(function(response){
         $scope.categories = response.data;
     })
 });
 
-app.directive('setbg', () => {
+app.controller('ShopController', function($scope, $http){
+    $scope.currentPage = 1;
+    $scope.itemsPerPage = 6;
+    $scope.categories = [];
+    $scope.categoriesproducts = [];
+
+    $scope.Init = function () {
+        // lấy các category
+        $http.get(DOMAIN + "shop/Get_Category").then(function (response) {
+            $scope.categories = response.data;
+        });
+
+        // Lấy tất cả sản phẩm
+        $http.get(DOMAIN + "shop/Get_Product").then(function (response) {
+            $scope.categoriesproducts = response.data;
+        });
+    };
+
+    $scope.Init();
+
+    $scope.All = function () {
+        $http.get(DOMAIN + "shop/Get_Product").then(function (response) {
+            $scope.categoriesproducts = response.data;
+        });
+    };
+
+    $scope.CategoryProduct = function (ID_Category) {
+        $http.get(DOMAIN + "shop/Get_Category_Product/" + ID_Category).then(function (response) {
+            $scope.categoriesproducts = response.data;
+        });
+    };
+
+    $scope.getCurrentPageProducts = function () {
+        var startIndex = ($scope.currentPage - 1) * $scope.itemsPerPage;
+        var endIndex = startIndex + $scope.itemsPerPage;
+        return $scope.categoriesproducts.slice(startIndex, endIndex);
+    };
+
+    $scope.getTotalPages = function () {
+        return Math.ceil($scope.categoriesproducts.length / $scope.itemsPerPage);
+    };
+
+    $scope.getPageNumbers = function () {
+        var totalPages = $scope.getTotalPages();
+        var pageNumbers = [];
+        for (var i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };
+
+    $scope.gotoPage = function (page) {
+        if (page >= 1 && page <= $scope.getTotalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+
+    $scope.showPagination = function () {
+        return $scope.getTotalPages() > 1;
+    };
+
+    $scope.gotoProductDetail = function(ID_Product){
+        $location.path('/product_detail/' + ID_Product);
+    };
+});
+
+app.controller('CheckoutController', function($scope, $http){
+    
+});
+
+app.controller('LoginController', function($scope, $http){
+    
+});
+
+app.controller('ProductDetailController', function($scope, $http){
+    
+});
+
+app.controller('ProfileController', function($scope, $http){
+    
+});
+
+app.controller('RegisterController', function($scope, $http){
+    
+});
+
+app.controller('ShopCartController', function($scope, $http){
+    
+})
+
+
+
+
+
+
+
+
+
+
+
+
+app.directive('setbg', function (){
     /*------------------
         Background Set
     --------------------*/
-    $('.set-bg').each(function () {
-        var bg = $(this).data('setbg');
-        $(this).css('background-image', 'url(' + bg + ')');
-    });
-})
+    return {
+        link: function(scope, element, attrs){
+            element.css('background-image', 'url(' + attrs.setbg + ')');
+        }
+    };
+    // $('.set-bg').each(function () {
+    //     var bg = $(this).data('setbg');
+    //     $(this).css('background-image', 'url(' + bg + ')');
+    // });
+});
 
 app.directive('shop', ()=>{
     return {
         restrict: 'E',
         templateUrl: './Views/shop.html',
-        bind: {
-            obj: '='
-        },
-        controller: ($scope, $routeParams) => {
-            console.log($routeParams.id);
-            console.log($scope.obj);
-        },
+        };
+});
+
+app.directive('headingPage', () =>{
+    return{
+        restrict: 'E',
+        templateUrl: './Views/header.html',
     }
-})
+});
+
+app.directive('footerPage', () =>{
+    return{
+        restrict: 'E',
+        templateUrl: './Views/footer.html',
+    }
+});
+
+app.directive('checkout', () =>{
+    return{
+        restrict: 'E',
+        templateUrl: './Views/checkout.html',
+    }
+});
+
+app.directive('login', () =>{
+    return{
+        restrict: 'E',
+        templateUrl: './Views/login.html',
+    }
+});
+
+app.directive('productdetail', () =>{
+    return{
+        restrict: 'E',
+        templateUrl: './Views/product_detail.html',
+    }
+});
+
+app.directive('profile', () =>{
+    return{
+        restrict: 'E',
+        templateUrl: './Views/profile.html',
+    }
+});
+
+app.directive('register', () =>{
+    return{
+        restrict: 'E',
+        templateUrl: './Views/register.html',
+    }
+});
+
+app.directive('shopcart', () =>{
+    return{
+        restrict: 'E',
+        templateUrl: './Views/shop_cart.html',
+    }
+});
+
+
+
+
+
+
+
+    
