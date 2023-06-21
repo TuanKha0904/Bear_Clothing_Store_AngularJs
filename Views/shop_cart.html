@@ -25,12 +25,12 @@
                                     </td>
                                     <td class="cart__price">$ {{product.Price}}</td>
                                     <td class="cart__quantity">
-                                        <div class="pro-qty" quantity-buttons>
-                                            <input type="text" value="{{product.Quantity}}">
+                                        <div class="pro-qty">
+                                            <input type="number" value="{{product.Quantity}}" ng-model = "product.Quantity", ng-change = "updateProductInCart($index)">
                                         </div>
                                     </td>
                                     <td class="cart__total">{{product.Price * product.Quantity}}</td>
-                                    <td class="cart__close"><span class="icon_close" ng-click = "removeFromCart($index)"></span></td>
+                                    <td class="cart__close"><span class="icon_close" ng-click = "removeFromCart($index)" ></span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -49,7 +49,7 @@
                 <div class="col-lg-6">
                     <div class="discount__content">
                         <h6>Discount codes</h6>
-                        <form action="#">
+                        <form>
                             <input type="text" placeholder="Enter your coupon code">
                             <button type="submit" class="site-btn">Apply</button>
                         </form>

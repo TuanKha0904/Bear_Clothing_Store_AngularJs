@@ -110,7 +110,7 @@ app.controller('ShopController', function ($scope, $http, CartService, $rootScop
         return $scope.getTotalPages() > 1;
     };
 
-    $scope.addToCart = function(ID_Product, ProductName, Image_url, Price, Quantity){
+    $scope.addToCart = function (ID_Product, ProductName, Image_url, Price, Quantity) {
         CartService.addToCart(ID_Product, ProductName, Image_url, Price, Quantity);
         $scope.cartInfor = CartService.getCartQuantity();
         alert('Sản phẩm đã được thêm vào giỏ hàng');
@@ -127,21 +127,20 @@ app.controller('LoginController', function ($scope, $http) {
 
 });
 
-app.controller('ProductDetailController', function ( $http, $routeParams, $scope, CartService, $rootScope) {
+app.controller('ProductDetailController', function ($http, $routeParams, $scope, CartService, $rootScope) {
     var productID = $routeParams.id;
     $http.get(DOMAIN + 'ProductDetail/index/' + productID).then(function (response) {
         $scope.productid = response.data;
     });
 
-    $scope.addToCart = function(ID_Product, ProductName, Image_url, Price, Quantity){
+    $scope.addToCart = function (ID_Product, ProductName, Image_url, Price, Quantity) {
         CartService.addToCart(ID_Product, ProductName, Image_url, Price, Quantity);
-        console.log("Added to cart:", ID_Product, ProductName, Image_url, Price, Quantity);
         $scope.cartInfor = CartService.getCartQuantity();
-        alert('Sản phẩm đã được thêm vào giỏ hàng');
+        alert('The product has been added to cart');
     };
 
     $rootScope.cartInfor = CartService.getCartQuantity();
-  
+
 });
 
 app.controller('ProfileController', function ($scope, $http) {
@@ -153,15 +152,25 @@ app.controller('RegisterController', function ($scope, $http) {
 });
 
 app.controller('ShopCartController', function ($scope, $http, CartService) {
-   $scope.cartProducts = CartService.getCartItems();
-   $scope.cartInfor = CartService.getCartQuantity();
-   $scope.totalPrice = CartService.getTotalPrice();
-   $scope.removeFromCart = function(index){
+    $scope.cartProducts = CartService.getCartItems();
+
+    $scope.cartInfor = CartService.getCartQuantity();
+
+    $scope.totalPrice = CartService.getTotalPrice();
+
+    $scope.removeFromCart = function (index) {
         CartService.removeFromCart(index);
         $scope.cartProducts = CartService.getCartItems();
         $scope.totalPrice = CartService.getTotalPrice();
         $scope.cartInfor = CartService.getCartQuantity();
-   };
+    };
+
+    $scope.updateProductInCart = function (index) {
+        var product = $scope.cartProducts[index];
+        CartService.updateProductInCart(index, product.Quantity);
+        $scope.totalPrice = CartService.getTotalPrice();
+    };
+
 });
 
 // directive
@@ -196,35 +205,35 @@ app.directive('banner', () => {
     };
 });
 
-app.directive('popub', function() {
+app.directive('popub', function () {
     /*------------------
         Magnific
     --------------------*/
     return {
         restrict: 'A',
-        link: function(scope, element, attrs) {
-          element.on('click', function() {
-            var imageUrl = attrs.href;
-            $.magnificPopup.open({
-              type: 'image',
-              items: {
-                src: imageUrl
-              },
-              mainClass: 'mfp-with-zoom',
-              zoom: {
-                enabled: true,
-                duration: 300,
-                easing: 'ease-in-out'
-              }
+        link: function (scope, element, attrs) {
+            element.on('click', function () {
+                var imageUrl = attrs.href;
+                $.magnificPopup.open({
+                    type: 'image',
+                    items: {
+                        src: imageUrl
+                    },
+                    mainClass: 'mfp-with-zoom',
+                    zoom: {
+                        enabled: true,
+                        duration: 300,
+                        easing: 'ease-in-out'
+                    }
+                });
             });
-          });
         }
-      };
+    };
 });
 
-app.directive('productSlider', function() {
+app.directive('productSlider', function () {
     return {
-        link: function(scope, element, attrs) {
+        link: function (scope, element, attrs) {
             $(element).owlCarousel({
                 loop: false,
                 margin: 0,
@@ -237,14 +246,14 @@ app.directive('productSlider', function() {
                 autoplay: false,
                 mouseDrag: false,
                 startPosition: 'URLHash'
-            }).on('changed.owl.carousel', function(event) {
+            }).on('changed.owl.carousel', function (event) {
                 var indexNum = event.item.index + 1;
                 product_thumbs(indexNum);
             });
 
             function product_thumbs(num) {
                 var thumbs = element[0].querySelectorAll('.product__thumb a');
-                thumbs.forEach(function(e) {
+                thumbs.forEach(function (e) {
                     e.classList.remove("active");
                     if (e.hash.split("-")[1] == num) {
                         e.classList.add("active");
@@ -253,7 +262,7 @@ app.directive('productSlider', function() {
             }
 
             // Sử dụng event delegation để xử lý sự kiện click
-            element.on('click', '.product__thumb a', function() {
+            element.on('click', '.product__thumb a', function () {
                 var indexNum = this.hash.split("-")[1];
                 product_thumbs(indexNum);
             });
@@ -261,9 +270,9 @@ app.directive('productSlider', function() {
     };
 });
 
-app.directive('quantityButtons',  function() {
+app.directive('quantityButtons', function () {
     return {
-        link: function(scope, element, attrs) {
+        link: function (scope, element, attrs) {
             var proQty = element;
             proQty.prepend('<span class="dec qtybtn">-</span>');
             proQty.append('<span class="inc qtybtn">+</span>');
@@ -351,10 +360,10 @@ app.directive('shopcart', () => {
     }
 });
 
-app.service('CartService', function(){
+app.service('CartService', function () {
     var cartItems = [];
     var cartQuantity = 0;
-    this.addToCart = function(id, name, image, price, quantity){
+    this.addToCart = function (id, name, image, price, quantity) {
         var item = {
             ID_Product: id,
             NameProduct: name,
@@ -363,29 +372,34 @@ app.service('CartService', function(){
             Quantity: quantity
         };
         cartItems.push(item);
-        cartQuantity+=1;
+        cartQuantity += 1;
     };
-    this.getCartItems = function(){
+    this.getCartItems = function () {
         return cartItems;
     };
 
-    this.getTotalPrice = function(){
+    this.removeFromCart = function (index) {
+        cartItems.splice(index, 1);
+        cartQuantity -= 1;
+    };
+
+    this.updateProductInCart = function (index, quantity) {
+        cartItems[index].Quantity = quantity;
+    };
+
+    this.getTotalPrice = function () {
         var totalPrice = 0;
-        for (var i = 0; i < cartItems.length; i++){
+        for (var i = 0; i < cartItems.length; i++) {
             var item = cartItems[i];
             totalPrice += item.Price * item.Quantity;
         }
         return totalPrice;
     };
 
-    this.removeFromCart = function(index){
-        cartItems.splice(index, 1);
-        cartQuantity -= 1;
-    };
-
-    this.getCartQuantity = function() {
+    this.getCartQuantity = function () {
         return cartQuantity;
     };
+
 
 });
 
