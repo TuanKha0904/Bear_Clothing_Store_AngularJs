@@ -155,6 +155,7 @@ app.controller('RegisterController', function ($scope, $http) {
 app.controller('ShopCartController', function ($scope, $http, CartService) {
    $scope.cartProducts = CartService.getCartItems();
    $scope.cartInfor = CartService.getCartQuantity();
+   $scope.totalPrice = CartService.getTotalPrice();
 });
 
 // directive
@@ -364,6 +365,15 @@ app.service('CartService', function(){
     this.getCartQuantity = function() {
         return cartQuantity;
     };
+
+    this.getTotalPrice = function(){
+        var totalPrice = 0;
+        for (var i = 0; i < cartItems.length; i++){
+            var item = cartItems[i];
+            totalPrice += item.Price * item.Quantity;
+        }
+        return totalPrice;
+    }
 });
 
 
