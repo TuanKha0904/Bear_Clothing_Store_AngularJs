@@ -36,11 +36,8 @@
                             <div class="product__item__pic set-bg"
                                 data-setbg="{{product.Image_url}}">
                                 <ul class="product__hover">
-                                    <li><a href = "{{product.Image_url}}" class = "image-popup"  >
-                                         <span class="arrow_expand"></span>
-                                    </a></li>
                                     <li><a href="#!product_detail/{{product.ID_Product}}"><span class="icon_menu"></span></a></li>
-                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    <li><a ng-click = "addToCart(product.ID_Product, product.NameProduct, product.Image_url, product.Price, 1)"><span class="icon_bag_alt"></span></a></li>
                                 </ul>
                             </div>
                             <div class="product__item__text">

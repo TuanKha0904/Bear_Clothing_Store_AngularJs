@@ -1661,6 +1661,9 @@ ol {
 .shop__cart__table tbody tr .cart__product__item img {
 	float: left;
 	margin-right: 25px;
+	width: 50px;
+	height: 50px;
+	box-sizing: border-box;
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title {

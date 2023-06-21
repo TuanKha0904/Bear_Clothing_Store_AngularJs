@@ -49,7 +49,7 @@ app.controller('HomeController', function ($scope, $http) {
     })
 });
 
-app.controller('ShopController', function ($scope, $http) {
+app.controller('ShopController', function ($scope, $http, CartService, $rootScope) {
     $scope.currentPage = 1;
     $scope.itemsPerPage = 6;
     $scope.categories = [];
@@ -109,6 +109,14 @@ app.controller('ShopController', function ($scope, $http) {
     $scope.showPagination = function () {
         return $scope.getTotalPages() > 1;
     };
+
+    $scope.addToCart = function(ID_Product, ProductName, Image_url, Price, Quantity){
+        CartService.addToCart(ID_Product, ProductName, Image_url, Price, Quantity);
+        $scope.cartInfor = CartService.getCartQuantity();
+        alert('Sản phẩm đã được thêm vào giỏ hàng');
+    };
+
+    $rootScope.cartInfor = CartService.getCartQuantity();
 });
 
 app.controller('CheckoutController', function ($scope, $http) {
@@ -135,8 +143,9 @@ app.controller('RegisterController', function ($scope, $http) {
 
 });
 
-app.controller('ShopCartController', function ($scope, $http) {
-
+app.controller('ShopCartController', function ($scope, $http, CartService) {
+   $scope.cartProducts = CartService.getCartItems();
+   $scope.cartInfor = CartService.getCartQuantity();
 });
 
 // directive
@@ -323,6 +332,28 @@ app.directive('shopcart', () => {
         restrict: 'E',
         templateUrl: './Views/shop_cart.html',
     }
+});
+
+app.service('CartService', function(){
+    var cartItems = [];
+    var cartQuantity = 0;
+    this.addToCart = function(id, name, image, price, quantity){
+        var item = {
+            ID_Product: id,
+            NameProduct: name,
+            Image_url: image,
+            Price: price,
+            Quantity: quantity
+        };
+        cartItems.push(item);
+        cartQuantity+=1;
+    };
+    this.getCartItems = function(){
+        return cartItems;
+    };
+    this.getCartQuantity = function() {
+        return cartQuantity;
+    };
 });
 
 
