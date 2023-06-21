@@ -156,6 +156,12 @@ app.controller('ShopCartController', function ($scope, $http, CartService) {
    $scope.cartProducts = CartService.getCartItems();
    $scope.cartInfor = CartService.getCartQuantity();
    $scope.totalPrice = CartService.getTotalPrice();
+   $scope.removeFromCart = function(index){
+        CartService.removeFromCart(index);
+        $scope.cartProducts = CartService.getCartItems();
+        $scope.totalPrice = CartService.getTotalPrice();
+        $scope.cartInfor = CartService.getCartQuantity();
+   };
 });
 
 // directive
@@ -362,9 +368,6 @@ app.service('CartService', function(){
     this.getCartItems = function(){
         return cartItems;
     };
-    this.getCartQuantity = function() {
-        return cartQuantity;
-    };
 
     this.getTotalPrice = function(){
         var totalPrice = 0;
@@ -373,7 +376,17 @@ app.service('CartService', function(){
             totalPrice += item.Price * item.Quantity;
         }
         return totalPrice;
-    }
+    };
+
+    this.removeFromCart = function(index){
+        cartItems.splice(index, 1);
+        cartQuantity -= 1;
+    };
+
+    this.getCartQuantity = function() {
+        return cartQuantity;
+    };
+
 });
 
 

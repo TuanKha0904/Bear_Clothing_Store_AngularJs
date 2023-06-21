@@ -30,7 +30,7 @@
                                         </div>
                                     </td>
                                     <td class="cart__total">{{product.Price * product.Quantity}}</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
+                                    <td class="cart__close"><span class="icon_close" ng-click = "removeFromCart($index)"></span></td>
                                 </tr>
                             </tbody>
                         </table>
