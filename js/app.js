@@ -119,11 +119,12 @@ app.controller('LoginController', function ($scope, $http) {
 
 });
 
-app.controller('ProductDetailController', function ($scope, $http, $routeParams) {
+app.controller('ProductDetailController', function ( $http, $routeParams, $scope) {
     var productID = $routeParams.id;
     $http.get(DOMAIN + 'ProductDetail/index/' + productID).then(function (response) {
-        $scope.product = response.data;
+        $scope.productid = response.data;
     });
+  
 });
 
 app.controller('ProfileController', function ($scope, $http) {
@@ -194,6 +195,71 @@ app.directive('popub', function() {
           });
         }
       };
+});
+
+app.directive('productSlider', function() {
+    return {
+        link: function(scope, element, attrs) {
+            $(element).owlCarousel({
+                loop: false,
+                margin: 0,
+                items: 1,
+                dots: false,
+                nav: true,
+                navText: ["<i class='arrow_carrot-left'></i>", "<i class='arrow_carrot-right'></i>"],
+                smartSpeed: 1200,
+                autoHeight: false,
+                autoplay: false,
+                mouseDrag: false,
+                startPosition: 'URLHash'
+            }).on('changed.owl.carousel', function(event) {
+                var indexNum = event.item.index + 1;
+                product_thumbs(indexNum);
+            });
+
+            function product_thumbs(num) {
+                var thumbs = element[0].querySelectorAll('.product__thumb a');
+                thumbs.forEach(function(e) {
+                    e.classList.remove("active");
+                    if (e.hash.split("-")[1] == num) {
+                        e.classList.add("active");
+                    }
+                });
+            }
+
+            // Sử dụng event delegation để xử lý sự kiện click
+            element.on('click', '.product__thumb a', function() {
+                var indexNum = this.hash.split("-")[1];
+                product_thumbs(indexNum);
+            });
+        }
+    };
+});
+
+app.directive('quantityButtons', function() {
+    return {
+        link: function(scope, element, attrs) {
+            var proQty = element;
+            proQty.prepend('<span class="dec qtybtn">-</span>');
+            proQty.append('<span class="inc qtybtn">+</span>');
+            proQty.on('click', '.qtybtn', function () {
+                var button = angular.element(this);
+                var oldValue = button.parent().find('input').val();
+                if (button.hasClass('inc')) {
+                    var newVal = parseFloat(oldValue) + 1;
+                } else {
+                    // Don't allow decrementing below zero
+                    if (oldValue > 0) {
+                        var newVal = parseFloat(oldValue) - 1;
+                    } else {
+                        newVal = 0;
+                    }
+                }
+                button.parent().find('input').val(newVal);
+                scope.$apply(); // Áp dụng sự thay đổi giá trị vào scope
+            });
+        }
+    };
 });
 
 app.directive('shop', () => {
