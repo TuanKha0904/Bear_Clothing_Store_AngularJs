@@ -22,10 +22,10 @@
                             <div class="quantity" >
                                 <span>Quantity:</span>
                                 <div class="pro-qty" quantity-buttons>
-                                    <input type="text" value="1">
+                                    <input type="text" ng-model = 'quantity'  ng-init="quantity = 1">
                                 </div>
                             </div>
-                            <a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                            <a class="cart-btn" ng-click = "addToCart(productid[0].ID_Product, productid[0].NameProduct, productid[0].Image_url, productid[0].Price, quantity)"><span class="icon_bag_alt"></span> Add to cart</a>
                         </div>
                     </div>
                 </div>

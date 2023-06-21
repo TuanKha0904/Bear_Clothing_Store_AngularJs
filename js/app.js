@@ -127,11 +127,20 @@ app.controller('LoginController', function ($scope, $http) {
 
 });
 
-app.controller('ProductDetailController', function ( $http, $routeParams, $scope) {
+app.controller('ProductDetailController', function ( $http, $routeParams, $scope, CartService, $rootScope) {
     var productID = $routeParams.id;
     $http.get(DOMAIN + 'ProductDetail/index/' + productID).then(function (response) {
         $scope.productid = response.data;
     });
+
+    $scope.addToCart = function(ID_Product, ProductName, Image_url, Price, Quantity){
+        CartService.addToCart(ID_Product, ProductName, Image_url, Price, Quantity);
+        console.log("Added to cart:", ID_Product, ProductName, Image_url, Price, Quantity);
+        $scope.cartInfor = CartService.getCartQuantity();
+        alert('Sản phẩm đã được thêm vào giỏ hàng');
+    };
+
+    $rootScope.cartInfor = CartService.getCartQuantity();
   
 });
 
@@ -245,7 +254,7 @@ app.directive('productSlider', function() {
     };
 });
 
-app.directive('quantityButtons', function() {
+app.directive('quantityButtons',  function() {
     return {
         link: function(scope, element, attrs) {
             var proQty = element;
@@ -265,6 +274,7 @@ app.directive('quantityButtons', function() {
                     }
                 }
                 button.parent().find('input').val(newVal);
+                scope.quantity = newVal; // Cập nhật giá trị của $scope.quantity
                 scope.$apply(); // Áp dụng sự thay đổi giá trị vào scope
             });
         }
