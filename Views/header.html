@@ -34,19 +34,21 @@
                         <li><a href="#!shop">Shop</a></li>
                         <li><a href="#!shop_cart">Shop Cart</a></li>
                         <li><a href="#!checkout">Checkout</a></li>
+                        <li><a href="#!profile" ng-if="isUserLoggedIn">{{username}}</a></li>
                     </ul>
                 </nav>
             </div>
             <div class="col-lg-3">
                 <div class="header__right">
                     <div class="header__right__auth">
-                        <a href="#!login">Login</a>
-                        <a href="#!register">Register</a>
+                        <a href="#!login" ng-if="!isUserLoggedIn">Login</a>
+                        <a href="#!register" ng-if="!isUserLoggedIn">Register</a>
                     </div>
                     <ul class="header__right__widget">
                         <li><a href="#!shop_cart"><span class="icon_bag_alt"></span>
                                 <div class="tip" ng-if = 'cartInfor > 0'>{{cartInfor}}</div>
-                            </a></li>
+                        </a></li>
+                        <li><a ng-if="isUserLoggedIn"><span class="fa fa-sign-out" ng-click = "logout()"></span></a></li>                    
                     </ul>
                 </div>
             </div>

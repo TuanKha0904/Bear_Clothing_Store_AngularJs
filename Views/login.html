@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Login 10</title>
+	<title>Bear Clothing | Store</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -25,24 +25,26 @@
 			<div class="row justify-content-center">
 				<div class="col-md-6 col-lg-4">
 					<div class="login-wrap p-0">
-						<form action="#" class="signin-form">
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Username" required>
+						<form name="loginForm" class="signin-form">
+							<div class="form-group" ng-class="{ 'has-error': loginForm.username.$invalid && !loginForm.username.$pristine }">
+								<input type="text" class="form-control" name="account" ng-model="account" placeholder="Account" required>
+								<div class="help-block" ng-messages="loginForm.account.$error" ng-if="loginForm.account.$invalid && !loginForm.account.$pristine">
+									<p ng-message="required">Account is required.</p>
+								</div>
+							</div>
+							<div class="form-group" ng-class="{ 'has-error': loginForm.password.$invalid && !loginForm.password.$pristine }">
+								<input id="password-field" type="password" class="form-control" name="password" ng-model="password" placeholder="Password" required>
+								<span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+								<div class="help-block" ng-messages="loginForm.password.$error" ng-if="loginForm.password.$invalid && !loginForm.password.$pristine">
+									<p ng-message="required">Password is required.</p>
+								</div>
 							</div>
 							<div class="form-group">
-								<input id="password-field" type="password" class="form-control" placeholder="Password"
-									required>
-								<span toggle="#password-field"
-									class="fa fa-fw fa-eye field-icon toggle-password"></span>
+								<button type="submit" class="form-control btn btn-primary submit px-3" ng-disabled="loginForm.$invalid" ng-click="Login(account, password)">Sign In</button>
 							</div>
-							<div class="form-group">
-								<button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
-							</div>
-							<div class="form-group d-md-flex">
-
 						</form>
 						<p class="loginhere">
-							Have already an account ? <a href="#!register" class="loginhere-link">Register here</a>
+							Have already an account? <a href="#!register" class="loginhere-link">Register here</a>
 						</p>
 					</div>
 				</div>

@@ -123,8 +123,26 @@ app.controller('CheckoutController', function ($scope, $http) {
 
 });
 
-app.controller('LoginController', function ($scope, $http) {
-
+app.controller('LoginController', function ($scope, $http, UserService, $window) {
+    $scope.Login = function(account, password) {
+        var data = {
+            account: account,
+            password: password
+        };
+        $http.post(DOMAIN + "login/Process_Login", data).then(function(response){
+            $scope.result = response.data;
+            var user = $scope.result;
+            if (user == 2)
+                alert('Account or Password is wrong!!! Please check');
+            else if (user == 0)
+                alert('The Account is invalid !!! Please create a new account');
+            else{
+                alert('Logged in successfully');
+                UserService.setUser(user.ID_User, user.Account, user.Password, user.Username ,user.Birthday, user.Address, user.DateCreate, user.ID_Authorize);
+                $window.history.back();
+            }
+        });
+    };
 });
 
 app.controller('ProductDetailController', function ($http, $routeParams, $scope, CartService, $rootScope) {
@@ -171,6 +189,20 @@ app.controller('ShopCartController', function ($scope, $http, CartService) {
         $scope.totalPrice = CartService.getTotalPrice();
     };
 
+});
+
+app.controller('HeadingPageController', function($scope, UserService){
+    $scope.isUserLoggedIn = false;
+    var user = UserService.getUser();
+    if(user && user.Username){
+        $scope.username = user.Username;
+        $scope.isUserLoggedIn = true;
+    }
+
+    $scope.logout = function(){
+        UserService.logout();
+        $scope.isUserLoggedIn = false;
+    }
 });
 
 // directive
@@ -308,6 +340,7 @@ app.directive('headingPage', () => {
     return {
         restrict: 'E',
         templateUrl: './Views/header.html',
+        controller: 'HeadingPageController'
     }
 });
 
@@ -360,6 +393,7 @@ app.directive('shopcart', () => {
     }
 });
 
+//Service
 app.service('CartService', function () {
     var cartItems = [];
     var cartQuantity = 0;
@@ -401,6 +435,28 @@ app.service('CartService', function () {
     };
 
 
+});
+
+app.service('UserService', function(){
+    var user = {};
+
+    this.setUser = function(id, account, password, username, birthday, address, datecreate, id_authorize){
+            user.ID_User = id;
+            user.Account = account;
+            user.Password = password;
+            user.Username = username;
+            user.Birthday = birthday;
+            user.Address = address;
+            user.DateCreate = datecreate;
+            user.ID_Authorize = id_authorize;
+    };
+    this.getUser = function(){
+        return user;
+    };
+
+    this.logout = function(){
+        user = {};
+    }
 });
 
 
