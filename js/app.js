@@ -192,7 +192,7 @@ app.controller('ShopCartController', function ($scope, $http, CartService) {
 
 });
 
-app.controller('HeadingPageController', function($scope, UserService){
+app.controller('HeadingPageController', function($scope, UserService, CartService, $location){
     $scope.isUserLoggedIn = false;
     var user = UserService.getUser();
     if(user && user.Username){
@@ -203,7 +203,10 @@ app.controller('HeadingPageController', function($scope, UserService){
     $scope.logout = function(){
         UserService.logout();
         $scope.isUserLoggedIn = false;
-    }
+        CartService.clearCart();
+        CartService.getCartQuantity();
+        $location.path('/');
+    }  
 });
 
 // directive
@@ -433,6 +436,11 @@ app.service('CartService', function () {
 
     this.getCartQuantity = function () {
         return cartQuantity;
+    };
+
+    this.clearCart = function(){
+        cartItems = [];
+        cartQuantity = 0;
     };
 
 
