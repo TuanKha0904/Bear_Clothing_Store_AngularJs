@@ -8346,3 +8346,9 @@ textarea.form-control {
         border: 1px solid transparent;
         background: #fbceb5;
         color: #fff; }
+
+body{
+  background-image: url('../../img/bg-registration-form-1.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
