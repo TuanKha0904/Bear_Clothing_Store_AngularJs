@@ -15,39 +15,55 @@
 <body>
     <div class="main">
         <section class="signup">
-            <!-- <img src="images/signup-bg.jpg" alt=""> -->
             <div class="container">
                 <div class="signup-content">
-                    <form method="POST" id="signup-form" class="signup-form">
+                    <form method="POST" id="signup-form" class="signup-form" ng-submit="register(signupForm.$valid)" name="signupForm">
                         <h2 class="form-title">Create account</h2>
-                        <div class="form-group">
-                            <input type="text" class="form-input" name="account" id="account" placeholder="Account" />
+                        <div class="form-group" ng-class="{ 'has-error': signupForm.account.$invalid && !signupForm.account.$pristine }">
+                          <input type="text" class="form-input" name="account" ng-model="account" placeholder="Account" required />
+                          <div class="help-block" ng-messages="signupForm.account.$error" ng-if="signupForm.account.$invalid && !signupForm.account.$pristine">
+                            <p ng-message="required">Account is required.</p>
+                          </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-input" name="username" id="username" placeholder="Username" />
+                        <div class="form-group" ng-class="{ 'has-error': signupForm.username.$invalid && !signupForm.username.$pristine }">
+                          <input type="text" class="form-input" name="username" ng-model="username" placeholder="Username" required />
+                          <div class="help-block" ng-messages="signupForm.username.$error" ng-if="signupForm.username.$invalid && !signupForm.username.$pristine">
+                            <p ng-message="required">Username is required.</p>
+                          </div>
                         </div>
-                        <div class="form-group">
-                            <input type="date" class="form-input" name="birthday" id="birthday"
-                                placeholder="Birthday" />
+                        <div class="form-group" ng-class="{ 'has-error': signupForm.birthday.$invalid && !signupForm.birthday.$pristine }">
+                          <input type="date" class="form-input" name="birthday" ng-model="birthday" placeholder="Birthday" required />
+                          <div class="help-block" ng-messages="signupForm.birthday.$error" ng-if="signupForm.birthday.$invalid && !signupForm.birthday.$pristine">
+                            <p ng-message="required">Birthday is required.</p>
+                          </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-input" name="address" id="address" placeholder="Address" />
+                        <div class="form-group" ng-class="{ 'has-error': signupForm.address.$invalid && !signupForm.address.$pristine }">
+                          <input type="text" class="form-input" name="address" ng-model="address" placeholder="Address" required />
+                          <div class="help-block" ng-messages="signupForm.address.$error" ng-if="signupForm.address.$invalid && !signupForm.address.$pristine">
+                            <p ng-message="required">Address is required.</p>
+                          </div>
                         </div>
-                        <div class="form-group">
-                            <input type="password" class="form-input" name="password" id="password"
-                                placeholder="Password" />
-                                <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                        <div class="form-group" ng-class="{ 'has-error': signupForm.password.$invalid && !signupForm.password.$pristine }">
+                          <input type="password" class="form-input" name="password" ng-model="password" placeholder="Password" required ng-minlength="3" />
+                          <div class="help-block" ng-messages="signupForm.password.$error" ng-if="signupForm.password.$invalid && !signupForm.password.$pristine">
+                            <p ng-message="required">Password is required.</p>
+                            <p ng-message="minlength">Password must be at least 3 characters.</p>
+                          </div>
                         </div>
+                        <div class="form-group" ng-class="{ 'has-error': signupForm.re_password.$invalid && !signupForm.re_password.$pristine }">
+                            <input type="password" class="form-input" name="re_password" ng-model="rePassword" placeholder="Repeat your password" required ng-minlength="3" ng-pattern="password" />
+                            <div class="help-block" ng-messages="signupForm.re_password.$error" ng-if="signupForm.re_password.$invalid && !signupForm.re_password.$pristine">
+                              <p ng-message="required">Repeat password is required.</p>
+                              <p ng-message="minlength">Repeat password must be at least 3 characters.</p>
+                              <p ng-message="pattern">Repeat password must match the password.</p>
+                            </div>
+                          </div>
                         <div class="form-group">
-                            <input type="password" class="form-input" name="re_password" id="re_password"
-                                placeholder="Repeat your password" />
+                          <input type="submit" name="submit" id="submit" class="form-submit" value="Sign up" ng-disabled="signupForm.$invalid" />
                         </div>
-                        <div class="form-group">
-                            <input type="submit" name="submit" id="submit" class="form-submit" value="Sign up" />
-                        </div>
-                    </form>
+                      </form>
                     <p class="loginhere">
-                        Have already an account ? <a href="#!login" class="loginhere-link">Login here</a>
+                        Have already an account? <a href="#!login" class="loginhere-link">Login here</a>
                     </p>
                 </div>
             </div>
