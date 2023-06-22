@@ -25,7 +25,7 @@ app.config(function ($routeProvider) {
             template: '<productdetail></productdetail>',
             controller: 'ProductDetailController'
         })
-        .when('/profile ', {
+        .when('/profile', {
             template: '<profile></profile>',
             controller: 'ProfileController'
         })
@@ -119,9 +119,27 @@ app.controller('ShopController', function ($scope, $http, CartService, $rootScop
     $rootScope.cartInfor = CartService.getCartQuantity();
 });
 
-app.controller('CheckoutController', function ($scope, CartService) {
+app.controller('CheckoutController', function ($scope, CartService, UserService, $location, $window) {
     $scope.products = CartService.getCartItems();
     $scope.total = CartService.getTotalPrice();
+
+    $scope.placeOrder = function () {
+        var user = UserService.getUser();
+        var order = $scope.products; // Lưu giá trị đơn hàng vào biến order
+        if (user.Username == null) {
+            alert('Please login your account!!!');
+            $location.path('/login');
+        } else if (order.length === 0) {
+            alert('Please order product!!!');
+            $location.path('/shop');
+        } else {
+            CartService.clearCart();
+            CartService.getCartQuantity();
+            alert('Order Success!!!');
+            $window.history.back();
+        }
+    };
+
 });
 
 app.controller('LoginController', function ($scope, $http, UserService, $window) {
@@ -208,6 +226,7 @@ app.controller('HeadingPageController', function($scope, UserService, CartServic
         $location.path('/');
     }  
 });
+
 
 // directive
 app.directive('setbg', function () {
@@ -467,11 +486,5 @@ app.service('UserService', function(){
         user = {};
     }
 });
-
-
-
-
-
-
 
 

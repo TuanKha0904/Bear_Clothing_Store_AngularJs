@@ -1,7 +1,69 @@
 <heading-page></heading-page>
 
 <section>
-    <h1>Profile</h1>
+    <style>
+        /* Màu sắc cho card và margin trên dưới */
+        .card {
+          background-color: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-radius: 4px;
+          margin: 100px 20px;
+        }
+      
+        /* Màu sắc cho tiêu đề card */
+        .card-title {
+          color: #007bff;
+          font-weight: bold;
+          margin-bottom: 15px;
+        }
+      
+        /* Màu sắc cho các mục trong danh sách */
+        .list-group-item {
+          background-color: #f8f9fa;
+          border: none;
+        }
+      
+        /* Màu sắc cho tên sản phẩm */
+        .list-group-item h6 {
+          color: #dc3545;
+          margin-bottom: 5px;
+        }
+      
+        /* Màu sắc cho các thông tin sản phẩm */
+        .list-group-item p {
+          color: #6c757d;
+          margin-bottom: 5px;
+        }
+      </style>
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Hiển thị thông tin người dùng -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Thông tin người dùng</h5>
+                    <p><strong>Tên:</strong> {{user.Name}}</p>
+                    <p><strong>Email:</strong> {{user.Email}}</p>
+                    <p><strong>Địa chỉ:</strong> {{user.Address}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!-- Hiển thị danh sách sản phẩm đã đặt hàng -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Các sản phẩm đã đặt hàng</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="product in orderedProducts">
+                            <h6>{{product.Name}}</h6>
+                            <p><strong>Số lượng:</strong> {{product.Quantity}}</p>
+                            <p><strong>Giá:</strong> {{product.Price}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </section>
 
