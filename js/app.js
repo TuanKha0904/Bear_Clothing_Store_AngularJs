@@ -119,8 +119,9 @@ app.controller('ShopController', function ($scope, $http, CartService, $rootScop
     $rootScope.cartInfor = CartService.getCartQuantity();
 });
 
-app.controller('CheckoutController', function ($scope, $http) {
-
+app.controller('CheckoutController', function ($scope, CartService) {
+    $scope.products = CartService.getCartItems();
+    $scope.total = CartService.getTotalPrice();
 });
 
 app.controller('LoginController', function ($scope, $http, UserService, $window) {

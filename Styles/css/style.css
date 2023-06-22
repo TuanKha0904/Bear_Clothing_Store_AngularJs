@@ -2034,7 +2034,12 @@ ol {
 	margin-bottom: 0;
 }
 
-.checkout__order__product ul li span {
+.checkout__order__product ul li .quantity-checkout{
+	float: right;
+	margin-left: -200px;
+}
+
+.checkout__order__product ul li span:last-child {
 	font-size: 14px;
 	color: #111111;
 	font-weight: 600;
@@ -2054,6 +2059,15 @@ ol {
 	font-weight: 600;
 	float: right;
 }
+
+.checkout__order__product ul li .text__center {
+	font-size: 16px;
+	color: #111111;
+	font-weight: 600;
+	float: right;
+	margin-right: 20px;
+}
+
 
 .checkout__order__total {
 	padding-top: 12px;
